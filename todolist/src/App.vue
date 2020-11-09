@@ -10,7 +10,8 @@
       class="todoAdd">
         <input 
         type="text"
-        v-model="inputValue">
+        v-model="inputValue"
+        :class="[addInputClass, 'todoAdd__input']">
 
         <button
         type="button"
@@ -30,20 +31,19 @@
       </div>
 
       <ul class="todoList">
-        <li v-for="(item, index) in myItems"
+        <li v-for="(item) in myItems"
         :key="item.id"
-        class="todoList__item"
-        :class="[item.completed ? 'isCompleted' : '']">
+        :class="[item.completed ? 'isCompleted' : '', 'todoList__item']">
         
           <input
           type="checkbox"
           class="todoList__check"
-          :name="'todo-' + index"
-          :id="'todo-' + index">
+          :name="'todo-' + item.id"
+          :id="'todo-' + item.id">
 
           <label 
-          :for="'todo-' + index"
-          @click="completeItem(index)">
+          :for="'todo-' + item.id"
+          @click="completeItem(item.id)">
           </label>
 
           <input 
@@ -51,12 +51,12 @@
           class="todoList__input"
           :value="item.name"
           :readonly="item.completed"
-          @keyup.enter="editItem($event, index)">
+          @keyup.enter="editItem($event, item.id)">
 
           <button
           type="button"
           class="todoList__remove"
-          @click="removeItem(index)">x</button>
+          @click="removeItem(item.id)">x</button>
         </li>
       </ul>
       </div>
@@ -73,7 +73,7 @@ export default {
       items: [],
       inputValue: "",
       showCompletedItems: true,
-      uniqueId: 1
+      uniqueId: 0
     };
   },
   computed: {
@@ -89,25 +89,35 @@ export default {
       }
   
       return todoListItems;
+    },
+    addInputClass () {
+      return this.inputValue.length > 1 ? 'green' : 'error'
     }
   },
   methods: {
-    addItem () {
-      this.items.push({
-        id: this.uniqueId,
-        name: this.inputValue,
-        completed: false
-      });
-      this.inputValue="";
-      this.uniqueId++
+    addItem (event) {
+      console.log(event);
+      this.inputValue = this.inputValue.trim();
+      if (this.inputValue.length > 1) {
+        this.items.push({
+          id: this.uniqueId,
+          name: this.inputValue,
+          completed: false
+        });
+        this.inputValue="";
+        this.uniqueId++;
+      }
     },
-    removeItem (index) {
+    removeItem (id) {
+      let index = this.findIndex(id);
       this.items.splice(index, 1)
     },
-    editItem (event, index) {
+    editItem (event, id) {
+      let index = this.findIndex(id);
       this.items[index].name = event.target.value;
     },
-    completeItem (index) {
+    completeItem (id) {
+      let index = this.findIndex(id);
       this.items[index].completed = this.items[index].completed ? false : true;
     },
     showCompleted (value) {
@@ -115,6 +125,9 @@ export default {
     },
     clearItems () {
       this.items = []
+    },
+    findIndex(id) {
+      return this.items.findIndex(item => item.id === id);
     }
   }
 };

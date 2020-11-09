@@ -32,16 +32,6 @@ h1 {
     text-transform: capitalize;
 }
 
-form input {
-  height: 69px;
-  width: 80%;
-}
-
-form button {
-  height: 69px;
-  width: 20%;
-}
-
 .todoList {
     margin-bottom: 25px;
   }
@@ -96,6 +86,22 @@ form button {
   }
   .todoAdd {
     margin-top: 25px;
+  }
+  .todoAdd input {
+    height: 69px;
+    width: 80%;
+    outline: none;
+    border: 1px solid #000;
+  }
+  .todoAdd input.error:focus {
+    border-color: red;
+  }
+  .todoAdd input.green:focus {
+    border-color: green;
+  }
+  .todoAdd button {
+    height: 69px;
+    width: 20%;
   }
   .todoList__nav {
     display: flex;
