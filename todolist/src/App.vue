@@ -1,58 +1,67 @@
 <template>
   <div id="app">
-    <div class="todoList__nav">
-        <button 
-      type="button"
-      @click="showCompleted(true)"
-      v-bind:class="[showCompletedItems ? 'isActive' : '']">All</button>
+    <div class="wrapper">
 
-      <button 
-      type="button"
-      @click="showCompleted(false)"
-      v-bind:class="[!showCompletedItems ? 'isActive' : '']">To complete</button>
-    </div>
+      <h1>Task List</h1>
 
-    <ul class="todoList">
-      <li v-for="(item, index) in myItems"
-      v-bind:key="index"
-      class="todoList__item"
-      v-bind:class="[item.completed ? 'isCompleted' : '']">
+      <div class="tasks">
       
-        <input
-        type="checkbox"
-        class="todoList__check"
-        v-bind:name="'todo-' + index"
-        v-bind:id="'todo-' + index">
-
-        <label 
-        v-bind:for="'todo-' + index"
-        @click="completeItem(index)">
-        </label>
-
+      <form @submit.prevent="addItem"
+      class="todoAdd">
         <input 
         type="text"
-        class="todoList__input"
-        v-bind:value="item.name"
-        v-bind:readonly="item.completed"
-        @keyup.enter="editItem($event, index)">
+        v-model="inputValue">
 
         <button
         type="button"
-        class="todoList__remove"
-        @click="removeItem(index)">x</button>
-      </li>
-    </ul>
+        @click="clearItems">Clear</button>
+      </form>
 
-    <form @submit.prevent="addItem"
-    class="todoAdd">
-      <input 
-      type="text"
-      v-model="inputValue">
+      <div class="todoList__nav">
+        <button 
+        type="button"
+        @click="showCompleted(true)"
+        :class="[showCompletedItems ? 'isActive' : '']">All</button>
 
-      <button
-      type="button"
-      @click="clearItems">Clear</button>
-    </form>
+        <button 
+        type="button"
+        @click="showCompleted(false)"
+        :class="[!showCompletedItems ? 'isActive' : '']">To complete</button>
+      </div>
+
+      <ul class="todoList">
+        <li v-for="(item, index) in myItems"
+        :key="item.id"
+        class="todoList__item"
+        :class="[item.completed ? 'isCompleted' : '']">
+        
+          <input
+          type="checkbox"
+          class="todoList__check"
+          :name="'todo-' + index"
+          :id="'todo-' + index">
+
+          <label 
+          :for="'todo-' + index"
+          @click="completeItem(index)">
+          </label>
+
+          <input 
+          type="text"
+          class="todoList__input"
+          :value="item.name"
+          :readonly="item.completed"
+          @keyup.enter="editItem($event, index)">
+
+          <button
+          type="button"
+          class="todoList__remove"
+          @click="removeItem(index)">x</button>
+        </li>
+      </ul>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -63,7 +72,8 @@ export default {
     return {
       items: [],
       inputValue: "",
-      showCompletedItems: true
+      showCompletedItems: true,
+      uniqueId: 1
     };
   },
   computed: {
@@ -84,10 +94,12 @@ export default {
   methods: {
     addItem () {
       this.items.push({
+        id: this.uniqueId,
         name: this.inputValue,
         completed: false
       });
-      this.inputValue=""
+      this.inputValue="";
+      this.uniqueId++
     },
     removeItem (index) {
       this.items.splice(index, 1)
@@ -107,79 +119,3 @@ export default {
   }
 };
 </script>
-
-<style>
-  .todoList {
-    margin-bottom: 25px;
-  }
-  .todoList__item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .todoList__input {
-    border: none;
-    margin-right: 10px;
-    font-size: 16px;
-  }
-  .todoList__input:focus {
-    outline: none;
-  }
-  .todoList__check {
-    display: none;
-  }
-  .todoList__check + label {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 1px solid #000;
-    margin-right: 10px;
-    position: relative;
-    cursor: pointer;
-  }
-  .isCompleted .todoList__check + label:before {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #000;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    z-index: 3;
-  }
-  .isCompleted .todoList__input {
-    text-decoration: line-through;
-  }
-  .todoList__remove {
-    border: none;
-    background: none;
-    font-size: 16px;
-    color: #000;
-    cursor: pointer;
-  }
-  .todoList__remove:hover {
-    color: red;
-  }
-  .todoAdd {
-    margin-top: 25px;
-  }
-  .todoList__nav {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  .todoList__nav button {
-    padding: 10px 20px;
-    font-size: 14px;
-    background: none;
-    color: #000;
-    border: none;
-    margin-right: 10px;
-    outline: none;
-  }
-  .todoList__nav button.isActive {
-    background: red;
-    color: #fff;
-  }
-</style>

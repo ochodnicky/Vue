@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background: #4d244e;
+    font-family: sans-serif;
+    border-top: 5px solid #aa8e8d;
+}
+
+h1 {
+    color: #aa8e8d;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 900;
+}
+
+.wrapper {
+    width: 500px;
+    margin: 100px auto;
+}
+
+.tasks {
+    background: #ae5f75;  
+    height: 69px;
+    width: 100%;
+    border-bottom: 1px solid #2C3E50;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+form input {
+  height: 69px;
+  width: 80%;
+}
+
+form button {
+  height: 69px;
+  width: 20%;
+}
+
+.todoList {
+    margin-bottom: 25px;
+  }
+  .todoList__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .todoList__input {
+    border: none;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  .todoList__input:focus {
+    outline: none;
+  }
+  .todoList__check {
+    display: none;
+  }
+  .todoList__check + label {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+  }
+  .isCompleted .todoList__check + label:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 3;
+  }
+  .isCompleted .todoList__input {
+    text-decoration: line-through;
+  }
+  .todoList__remove {
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+  }
+  .todoList__remove:hover {
+    color: red;
+  }
+  .todoAdd {
+    margin-top: 25px;
+  }
+  .todoList__nav {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .todoList__nav button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: none;
+    color: #000;
+    border: none;
+    margin-right: 10px;
+    outline: none;
+  }
+  .todoList__nav button.isActive {
+    background: red;
+    color: #fff;
+  }
