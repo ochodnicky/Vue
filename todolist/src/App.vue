@@ -3,8 +3,6 @@
     <div class="wrapper">
 
       <h1>Task List</h1>
-
-      <div class="tasks">
       
       <form @submit.prevent="addItem"
       class="todoAdd">
@@ -28,6 +26,17 @@
         type="button"
         @click="showCompleted(false)"
         :class="[!showCompletedItems ? 'isActive' : '']">To complete</button>
+      </div>
+
+       <div class="tasks">
+      
+      <div class="message">
+        <div class="message" v-if="myItems.length > 3">
+          {{ messageFull }}
+        </div>
+        <div class="message" v-else>
+          {{ messageEmpty }}
+        </div>
       </div>
 
       <ul class="todoList">
@@ -73,7 +82,9 @@ export default {
       items: [],
       inputValue: "",
       showCompletedItems: true,
-      uniqueId: 0
+      uniqueId: 0,
+      messageFull: "' You have a lot to do... 🐝 '",
+      messageEmpty: "' The list is quite empty.. 😴 '"
     };
   },
   computed: {
