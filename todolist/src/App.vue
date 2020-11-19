@@ -65,7 +65,7 @@
           <button
           type="button"
           class="todoList__remove"
-          @click="removeItem(item.id)">x</button>
+          @click="removeItem(item.id)">✕</button>
         </li>
       </ul>
       </div>
