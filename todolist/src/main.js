@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import { firestorePlugin } from 'vuefire'
+
 import('./assets/styles/styles.css')
+
+Vue.use(firestorePlugin)
+
 
 Vue.config.productionTip = false
 

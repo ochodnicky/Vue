@@ -76,6 +76,8 @@
 
 <!---------------------------->
 <script>
+import db from './db.js'
+
 export default {
   data() {
     return {
@@ -86,6 +88,9 @@ export default {
       messageFull: "' You have a lot to do... 🐝 '",
       messageEmpty: "' The list is quite empty.. 😴 '"
     };
+  },
+  firestore: {
+    items: db.collection('items'),
   },
   computed: {
     myItems () {
@@ -106,39 +111,59 @@ export default {
     }
   },
   methods: {
-    addItem (event) {
-      console.log(event);
+    addItem () {
       this.inputValue = this.inputValue.trim();
+
       if (this.inputValue.length > 1) {
-        this.items.push({
-          id: this.uniqueId,
-          name: this.inputValue,
-          completed: false
+        db.collection("items")
+        .doc(`${this.uniqueId}`).set({
+            id: this.uniqueId,
+            name: this.inputValue,
+            completed: false
         });
         this.inputValue="";
-        this.uniqueId++;
       }
     },
     removeItem (id) {
-      let index = this.findIndex(id);
-      this.items.splice(index, 1)
+      db.collection('items')
+      .doc(`${id}`)
+      .delete()
     },
     editItem (event, id) {
-      let index = this.findIndex(id);
-      this.items[index].name = event.target.value;
+      db.collection("items")
+      .doc(`${id}`).update({
+          name: event.target.value
+      });
     },
     completeItem (id) {
       let index = this.findIndex(id);
-      this.items[index].completed = this.items[index].completed ? false : true;
+      let isCompleted = this.items[index].completed ? false : true;
+      
+      db.collection("items")
+      .doc(`${id}`).update({
+          completed: isCompleted
+      });
     },
     showCompleted (value) {
       this.showCompletedItems = value;
     },
     clearItems () {
-      this.items = []
+      db.collection("items")
+      .get()
+      .then(res => {
+        res.forEach(element => {
+          element.ref.delete();
+        });
+      });
     },
     findIndex(id) {
       return this.items.findIndex(item => item.id === id);
+    }
+  },
+  updated () {
+    if(this.items.length > 0) {
+      let lastArray = this.items.length - 1;
+      this.uniqueId = Number(this.items[lastArray].id) + 1;
     }
   }
 };
