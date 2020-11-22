@@ -13,7 +13,7 @@
 
         <button
         type="button"
-        @click="clearItems">Clear</button>
+        @click="clearItems">Clear<br>All</button>
       </form>
 
       <div class="todoList__nav">
@@ -55,12 +55,14 @@
           @click="completeItem(item.id)">
           </label>
 
+          <div class="todoList__inputWrapper">
           <input 
           type="text"
           class="todoList__input"
           :value="item.name"
           :readonly="item.completed"
           @keyup.enter="editItem($event, item.id)">
+          </div>
 
           <button
           type="button"
@@ -148,6 +150,7 @@ export default {
       this.showCompletedItems = value;
     },
     clearItems () {
+      if(confirm("Are you sure you want to clear all?")){
       db.collection("items")
       .get()
       .then(res => {
@@ -155,7 +158,7 @@ export default {
           element.ref.delete();
         });
       });
-    },
+    }},
     findIndex(id) {
       return this.items.findIndex(item => item.id === id);
     }

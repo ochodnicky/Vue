@@ -20,7 +20,7 @@ h1 {
 
 .wrapper {
     width: 500px;
-    margin: 100px auto;
+    margin: 30px auto;
 }
 
 .tasks {
@@ -57,6 +57,30 @@ h1 {
     background: none; 
     color: #fff;
   }
+
+  .todoList__inputWrapper{
+    position: relative;
+    width: 70%;
+  }
+
+  .todoList__inputWrapper:after {
+    content: '';
+    background-color: white;
+    display: block;
+    width: 0;
+    height: 2px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    z-index: 5;
+    transition: width 500ms ease;
+  }
+
+  .isCompleted .todoList__inputWrapper:after {
+    width: 100%;
+  }
+
   .todoList__input:focus {
     outline: none;
   }
@@ -79,9 +103,7 @@ h1 {
     content: '✓';
     color: white;
   }
-  .isCompleted .todoList__input {
-    text-decoration: line-through;
-  }
+
   .todoList__remove {
     border: none;
     background: none;
@@ -89,9 +111,7 @@ h1 {
     color: rgb(255, 255, 255);
     cursor: pointer;
   }
-  .todoList__remove:hover {
-    color: red;
-  }
+
   .todoAdd {
     margin-top: 25px;
     display: flex;
@@ -102,6 +122,7 @@ h1 {
     width: 78%;
     border-radius: 20px 0;
     padding: 18px;
+    font-size: 24px;
     text-align: center;
     outline: none;
     border: 2px solid #000;
