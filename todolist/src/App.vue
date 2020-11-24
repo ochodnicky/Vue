@@ -1,18 +1,24 @@
 <template>
-  <div id="app">
-    <div class="wrapper">
+  <div class="wrapper">
 
       <h1>Task List</h1>
       
       <form @submit.prevent="addItem"
       class="todoAdd">
+      <div class="todoAdd__inputWrapper">
         <input 
         type="text"
+        placeholder="Add task..."
         v-model="inputValue"
         :class="[addInputClass, 'todoAdd__input']">
+        <div 
+        class="todoAdd__clear"
+        @click="clearInput">✕</div>
+      </div>
 
         <button
         type="button"
+        class="todoAdd__button"
         @click="clearItems">Clear<br>All</button>
       </form>
 
@@ -72,8 +78,11 @@
       </ul>
       </div>
 
+    <div class="footer">
+      <p>&copy; Ochodnický, Frýzlová</p>
     </div>
-  </div>
+
+    </div>
 </template>
 
 <!---------------------------->
@@ -109,10 +118,14 @@ export default {
       return todoListItems;
     },
     addInputClass () {
-      return this.inputValue.length > 1 ? 'green' : 'error'
+      return this.inputValue.length > 1 ? 'green' : ''
     }
   },
   methods: {
+    clearInput () {
+      this.inputValue = "";
+      document.querySelector(".todoAdd__input").focus();
+    },
     addItem () {
       this.inputValue = this.inputValue.trim();
 
